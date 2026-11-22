@@ -144,21 +144,20 @@ B_P = 1.34
 compute_CLint <- function(VP_df, fu, Q, B_P, Dose) {
   VP_df |>
     dplyr::mutate(
-      CLint_2B6_1  = CL_invitro_2B6_1  * CYP2B6 * 139 * 1500 * 1e-6,  # mL/min
+      CLint_2B6_1  = CL_invitro_2B6_1  * CYP2B6  * 139 * 1500 * 1e-6,
       CLint_2C19_1 = CL_invitro_2C19_1 * CYP2C19 * 139 * 1500 * 1e-6,
-      CLint_2B6_2  = CL_invitro_2B6_2  * CYP2B6 * 139 * 1500 * 1e-6,
-      CLint_2C19_2 = CL_invitro_2C19_2 * CYP2C19 * 139 * 1500 * 1e-6
-    ) |>
-    dplyr::mutate(
-      CLhep_2B6_1  = (CLint_2B6_1  * fu * Q) / (fu * CLint_2B6_1  + Q),
-      CLhep_2C19_1 = (CLint_2C19_1 * fu * Q) / (fu * CLint_2C19_1 + Q),
-      CLhep_2B6_2  = (CLint_2B6_2  * fu * Q) / (fu * CLint_2B6_2  + Q),
-      CLhep_2C19_2 = (CLint_2C19_2 * fu * Q) / (fu * CLint_2C19_2 + Q)
-    ) |>
-    dplyr::mutate(
-      CL  = CLhep_2B6_1 + CLhep_2C19_1 + CLhep_2B6_2 + CLhep_2C19_2,
-      CLp = CL * B_P,
-      AUC = Dose / CLp # mg*min/mL
+      CLint_2B6_2  = CL_invitro_2B6_2  * CYP2B6  * 139 * 1500 * 1e-6,
+      CLint_2C19_2 = CL_invitro_2C19_2 * CYP2C19 * 139 * 1500 * 1e-6,
+
+      CLint_total = CLint_2B6_1 + CLint_2C19_1 +
+                    CLint_2B6_2 + CLint_2C19_2,
+
+      CLhep_total = (CLint_total * fu * Q) /
+                    (fu * CLint_total + Q),  # mL/min
+
+      CL  = CLhep_total,  # Retain the original CL column
+      CLp = CLhep_total * B_P,
+      AUC = Dose / CLp    # mg*min/mL if Dose is in mg
     )
 }
 
