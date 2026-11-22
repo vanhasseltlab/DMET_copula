@@ -1,4 +1,4 @@
-# Joint distribution modelling of hepatic drug metabolizing enzymes and transporters expression for PBPK-driven virtual patient simulation
+# Joint distribution modeling of hepatic drug metabolizing enzymes and transporters expression for PBPK-driven virtual patient simulation
 
 These scripts were used to study the joint distribution between the gene expression of hepatic drug metabolizing enzymes and transporters (DMET) to support realistic PBPK predictions which utilize such DMET distributions. 
 
